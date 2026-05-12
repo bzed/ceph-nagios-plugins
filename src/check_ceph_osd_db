@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #  Copyright (c) 2020 Binero AB https://binero.com
@@ -95,13 +95,10 @@ def main():
         print("CRITICAL: %s" % err)
         return STATUS_CRITICAL
 
-    # escape IPv4 host address
-    osd_host = args.host.replace('.', '\.')
-    # escape IPv6 host address
-    osd_host = osd_host.replace('[', '\[')
-    osd_host = osd_host.replace(']', '\]')
+    # Automatically escapes all special regex characters (., [, ], etc.)
+    osd_host = re.escape(args.host)
 
-    osds_up = re.findall(r"^(osd\.[^ ]*) up.*%s:" % (osd_host), output, re.MULTILINE)
+    osds_up = re.findall(r"^(osd\.[^ ]*) up.*%s:" % (osd_host), output.decode('utf-8'), re.MULTILINE)
 
     final_status = STATUS_OK
     lines = []
@@ -117,11 +114,11 @@ def main():
         output, err = p.communicate()
 
         if err or not output:
-            print("CRITICAL: %s" % err)
+            print("CRITICAL: %s" % err.decode('utf-8'))
             return STATUS_CRITICAL
 
         try:
-            data = json.loads(output)
+            data = json.loads(output.decode('utf-8'))
         except Exception:
             print("CRITICAL: failed to load json")
             return STATUS_CRITICAL

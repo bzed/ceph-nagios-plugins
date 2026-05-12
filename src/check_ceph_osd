@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #  Copyright (c) 2013 Catalyst IT http://www.catalyst.net.nz
@@ -113,11 +113,8 @@ def main():
     print("OSD ERROR: %s" % err)
     return STATUS_ERROR
 
-  # escape IPv4 host address
-  osd_host = args.host.replace('.', '\.')
-  # escape IPv6 host address
-  osd_host = osd_host.replace('[', '\[')
-  osd_host = osd_host.replace(']', '\]')
+  # Automatically escapes all special regex characters (., [, ], etc.)
+  osd_host = re.escape(args.host)
   up = re.findall(r"^(osd\.%s) up.*%s:" % (args.osdid, osd_host), output, re.MULTILINE)
   if args.out:
     down = re.findall(r"^(osd\.%s) down.*%s:" % (args.osdid, osd_host), output, re.MULTILINE)
