@@ -1,3 +1,14 @@
+nagios-plugins-ceph (1.5.6-2) unstable; urgency=medium
+
+  * Ensure all nagios checks work with Python 3
+  * Update all scripts to use #!/usr/bin/env python3 shebang
+  * Fix check_ceph_osd_db: decode bytes output to string
+  * Use re.escape() for host address escaping in check_ceph_osd and check_ceph_osd_db
+  * Update debian packaging for python3: change python to python3 in dependencies
+  * Use debhelper-compat (= 13) instead of debian/compat
+
+ -- Bernd Zeimetz <bzed@debian.org>  Mon, 12 May 2025 10:00:00 +0200
+
 nagios-plugins-ceph (1.5.6-1) unstable; urgency=medium
 
   * Upstream version 1.5.6

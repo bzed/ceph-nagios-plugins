@@ -1,8 +1,9 @@
 Source: nagios-plugins-ceph
-Maintainer: Valery Tschopp <valery.tschopp@switch.ch>
+Maintainer: Bernd Zeimetz <bzed@debian.org>
 Section: misc
 Priority: optional
 Standards-Version: 3.9.8
+Vcs-Git: https://github.com/bzed/ceph-nagios-plugins.git
 Build-Depends: debhelper-compat (= 13), dh-python, python3:any
 
 Package: nagios-plugins-ceph
