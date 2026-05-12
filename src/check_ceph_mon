@@ -17,7 +17,6 @@
 #  limitations under the License.
 #
 
-from __future__ import print_function
 import argparse
 import socket
 import os
@@ -128,15 +127,15 @@ def main():
   output, err = p.communicate()
 
   if p.returncode != 0 or not output:
-    print("MON ERROR: %s" % err)
+    print("MON ERROR: %s" % err.decode('utf-8'))
     return STATUS_ERROR
 
   # load json output and parse
   quorum_status = False
   try:
-    quorum_status = json.loads(output)
+    quorum_status = json.loads(output.decode('utf-8'))
   except Exception as e:
-    print("MON ERROR: could not parse '%s' output: %s: %s" % (CEPH_COMMAND,output,e))
+    print("MON ERROR: could not parse '%s' output: %s: %s" % (CEPH_COMMAND,output.decode('utf-8'),e))
     return STATUS_UNKNOWN
 
   #print "XXX: quorum_status['quorum_names']:", quorum_status['quorum_names']

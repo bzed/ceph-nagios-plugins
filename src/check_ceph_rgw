@@ -17,7 +17,6 @@
 #  limitations under the License.
 
 
-from __future__ import print_function
 import argparse
 import os
 import re
@@ -82,10 +81,10 @@ def main():
   output, err = p.communicate()
 
   if p.returncode != 0 or not output:
-    print("RGW ERROR: %s :: %s" % (output, err))
+    print("RGW ERROR: %s :: %s" % (output.decode('utf-8'), err.decode('utf-8')))
     return STATUS_ERROR
 
-  bucket_stats = json.loads(output)
+  bucket_stats = json.loads(output.decode('utf-8'))
   #print bucket_stats
 
   buckets = []

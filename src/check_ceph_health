@@ -16,7 +16,6 @@
 #  limitations under the License.
 #
 
-from __future__ import print_function
 import argparse
 import os
 import subprocess
@@ -120,7 +119,7 @@ def main():
     p = subprocess.Popen(ceph_health,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     output, err = p.communicate()
     try:
-        output = json.loads(output)
+        output = json.loads(output.decode('utf-8'))
     except ValueError:
         output = dict()
 
@@ -186,7 +185,7 @@ def main():
 
     elif err:
         # read only first line of error
-        one_line = err.split('\n')[0]
+        one_line = err.decode('utf-8').split('\n')[0]
         if '-1 ' in one_line:
             idx = one_line.rfind('-1 ')
             print('ERROR: %s: %s' % (ceph_exec, one_line[idx+len('-1 '):]))

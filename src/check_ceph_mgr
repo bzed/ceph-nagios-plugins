@@ -16,7 +16,6 @@
 #  limitations under the License.
 #
 
-from __future__ import print_function
 import argparse
 import os
 import subprocess
@@ -152,15 +151,15 @@ def main():
     output, err = p.communicate()
 
     if p.returncode != 0 or not output:
-        print("MGR ERROR: {}".format(err))
+        print("MGR ERROR: {}".format(err.decode('utf-8')))
         return STATUS_UNKNOWN
 
     # load json output and parse
     mgr_dump = None
     try:
-        mgr_dump = json.loads(output)
+        mgr_dump = json.loads(output.decode('utf-8'))
     except Exception as e:
-        print("MGR ERROR: could not parse '{}' output: {}: {}".format(ceph_cmd, output, e))
+        print("MGR ERROR: could not parse '{}' output: {}: {}".format(ceph_cmd, output.decode('utf-8'), e))
         return STATUS_UNKNOWN
 
     # check active

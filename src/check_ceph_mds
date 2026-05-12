@@ -17,7 +17,6 @@
 #  limitations under the License.
 
 
-from __future__ import print_function
 import argparse
 import socket
 import os
@@ -90,15 +89,15 @@ def main():
     output, err = p.communicate()
 
     if p.returncode != 0 or not output:
-        print("MDS ERROR: %s" % err)
+        print("MDS ERROR: %s" % err.decode('utf-8'))
         return STATUS_ERROR
 
     # load json output and parse
     mds_stat = None
     try:
-        mds_stat = json.loads(output)
+        mds_stat = json.loads(output.decode('utf-8'))
     except Exception as e:
-        print("MDS ERROR: could not parse '%s' output: %s: %s" % (CEPH_COMMAND,output,e))
+        print("MDS ERROR: could not parse '%s' output: %s: %s" % (CEPH_COMMAND,output.decode('utf-8'),e))
         return STATUS_UNKNOWN
 
     return check_target_mds(mds_stat, args.filesystem, args.name)

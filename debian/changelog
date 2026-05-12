@@ -1,3 +1,16 @@
+nagios-plugins-ceph (1.5.6-4) unstable; urgency=medium
+
+  * Fix error output from subprocess to decode bytes to utf-8
+
+ -- Bernd Zeimetz <bzed@debian.org>  Mon, 12 May 2025 12:00:00 +0200
+
+nagios-plugins-ceph (1.5.6-3) unstable; urgency=medium
+
+  * Fix all subprocess output to decode bytes to utf-8 before processing
+  * Remove redundant from __future__ import print_function in all scripts
+
+ -- Bernd Zeimetz <bzed@debian.org>  Mon, 12 May 2025 11:00:00 +0200
+
 nagios-plugins-ceph (1.5.6-2) unstable; urgency=medium
 
   * Ensure all nagios checks work with Python 3
