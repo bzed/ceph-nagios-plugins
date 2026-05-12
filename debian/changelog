@@ -1,3 +1,14 @@
+nagios-plugins-ceph (1.5.6-5) unstable; urgency=medium
+
+  * Add cephadm support to all check scripts (from PR #88 by bluikko)
+    - Add --cephadm and --admexe arguments to check_ceph_df, check_ceph_mgr,
+      check_ceph_mon, check_ceph_osd, check_ceph_osd_db, check_ceph_osd_df, check_ceph_rgw
+    - Prepend 'cephadm shell' to commands when --cephadm is used
+    - Handle cephadm keyring with -v flag
+    - Skip cephadm extra output lines in error handling
+
+ -- Bernd Zeimetz <bzed@debian.org>  Tue, 13 May 2025 10:00:00 +0200
+
 nagios-plugins-ceph (1.5.6-4) unstable; urgency=medium
 
   * Fix error output from subprocess to decode bytes to utf-8
