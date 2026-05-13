@@ -1,0 +1,185 @@
+epoch 10805
+fsid 113431a7-6ca7-4ed4-bb50-6e465ce7ddfe
+created 2025-12-09T16:38:22.972793+0100
+modified 2026-05-13T14:47:18.186113+0200
+flags sortbitwise,recovery_deletes,purged_snapdirs,pglog_hardlimit
+crush_version 145
+full_ratio 0.95
+backfillfull_ratio 0.9
+nearfull_ratio 0.85
+require_min_compat_client luminous
+min_compat_client luminous
+require_osd_release squid
+stretch_mode_enabled false
+pool 1 '.mgr' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 1 pgp_num 1 autoscale_mode on last_change 16 flags hashpspool stripe_width 0 pg_num_max 32 pg_num_min 1 application mgr read_balance_score 50.00
+pool 2 'cephfs_data' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 32 pgp_num 32 autoscale_mode on last_change 615 lfor 0/615/613 flags hashpspool stripe_width 0 application cephfs read_balance_score 3.01
+pool 3 'cephfs_metadata' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 32 pgp_num 32 autoscale_mode on last_change 85 flags hashpspool stripe_width 0 pg_autoscale_bias 4 pg_num_min 16 recovery_priority 5 application cephfs read_balance_score 4.48
+pool 5 'nvme' replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 2048 pgp_num 2048 autoscale_mode off last_change 10343 lfor 0/0/5236 flags hashpspool,selfmanaged_snaps stripe_width 0 pg_num_min 2048 application rbd read_balance_score 1.27
+max_osd 49
+osd.0 up   in  weight 1 up_from 10647 up_thru 10721 down_at 10632 last_clean_interval [8465,10631) [v2:192.168.1.1:6906/2343492167,v1:192.168.1.1:6907/2343492167] [v2:192.168.1.1:6908/2343492167,v1:192.168.1.1:6909/2343492167] exists,up dc9634f2-5d3e-46ec-8dc9-8cbfe9131e63
+osd.1 up   in  weight 1 up_from 10642 up_thru 10740 down_at 10632 last_clean_interval [8463,10631) [v2:192.168.1.1:6810/3274702012,v1:192.168.1.1:6811/3274702012] [v2:192.168.1.1:6812/3274702012,v1:192.168.1.1:6813/3274702012] exists,up 320f095d-dd6b-4294-9aca-23322d5838da
+osd.2 up   in  weight 1 up_from 10685 up_thru 10741 down_at 10482 last_clean_interval [8776,10480) [v2:192.168.2.1:6914/2954421035,v1:192.168.2.1:6915/2954421035] [v2:192.168.2.1:6916/2954421035,v1:192.168.2.1:6917/2954421035] exists,up 2ce2e6c0-0ae1-481b-b7d2-6d2a5befbcc7
+osd.3 up   in  weight 1 up_from 10640 up_thru 10737 down_at 10632 last_clean_interval [8462,10631) [v2:192.168.1.1:6858/2647848683,v1:192.168.1.1:6861/2647848683] [v2:192.168.1.1:6864/2647848683,v1:192.168.1.1:6867/2647848683] exists,up cae8a6f0-ac5f-4b86-ad05-ba39b622eed8
+osd.4 up   in  weight 1 up_from 10486 up_thru 10704 down_at 10482 last_clean_interval [8449,10480) [v2:192.168.2.1:6818/1317483781,v1:192.168.2.1:6819/1317483781] [v2:192.168.2.1:6820/1317483781,v1:192.168.2.1:6821/1317483781] exists,up bd09d611-68a8-45c2-b53c-17f79d5140cb
+osd.5 up   in  weight 1 up_from 10485 up_thru 10713 down_at 10482 last_clean_interval [8450,10480) [v2:192.168.2.1:6866/94223655,v1:192.168.2.1:6867/94223655] [v2:192.168.2.1:6868/94223655,v1:192.168.2.1:6869/94223655] exists,up ba4e9815-42f9-452c-8fca-3e0ce84bde76
+osd.6 up   in  weight 1 up_from 10486 up_thru 10710 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6826/269647828,v1:192.168.2.1:6827/269647828] [v2:192.168.2.1:6828/269647828,v1:192.168.2.1:6829/269647828] exists,up 737ddd91-c38c-42fc-b83e-c92f647ba053
+osd.7 up   in  weight 1 up_from 10488 up_thru 10704 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6874/990347158,v1:192.168.2.1:6875/990347158] [v2:192.168.2.1:6876/990347158,v1:192.168.2.1:6877/990347158] exists,up 777d1e57-7bdd-47b8-8163-6a8fee147037
+osd.9 up   in  weight 1 up_from 10474 up_thru 10723 down_at 10468 last_clean_interval [10181,10466) [v2:192.168.3.1:6882/2728673942,v1:192.168.3.1:6884/2728673942] [v2:192.168.3.1:6885/2728673942,v1:192.168.3.1:6887/2728673942] exists,up b973eefb-5571-4689-a5f1-d0629acce8ae
+osd.10 up   in  weight 1 up_from 10472 up_thru 10711 down_at 10468 last_clean_interval [10185,10466) [v2:192.168.3.1:6883/1105695249,v1:192.168.3.1:6886/1105695249] [v2:192.168.3.1:6888/1105695249,v1:192.168.3.1:6891/1105695249] exists,up 3a88addf-892d-42f9-a76b-99396fcfe71a
+osd.11 up   in  weight 1 up_from 10472 up_thru 10749 down_at 10468 last_clean_interval [10181,10466) [v2:192.168.3.1:6818/1757736599,v1:192.168.3.1:6819/1757736599] [v2:192.168.3.1:6820/1757736599,v1:192.168.3.1:6821/1757736599] exists,up 615200b8-a0e0-46c4-9d7d-0bcb2dec0fed
+osd.12 up   in  weight 1 up_from 10645 up_thru 10724 down_at 10632 last_clean_interval [8463,10631) [v2:192.168.1.1:6826/2780473664,v1:192.168.1.1:6827/2780473664] [v2:192.168.1.1:6828/2780473664,v1:192.168.1.1:6829/2780473664] exists,up debdb74c-c0a3-4834-84cc-671cb02aa29f
+osd.13 up   in  weight 1 up_from 10642 up_thru 10719 down_at 10632 last_clean_interval [8462,10631) [v2:192.168.1.1:6914/1002334822,v1:192.168.1.1:6915/1002334822] [v2:192.168.1.1:6916/1002334822,v1:192.168.1.1:6917/1002334822] exists,up 2ad436e5-676b-43d9-833c-aca8d8abf3b9
+osd.14 up   in  weight 1 up_from 10640 up_thru 10749 down_at 10632 last_clean_interval [8465,10631) [v2:192.168.1.1:6859/313475768,v1:192.168.1.1:6862/313475768] [v2:192.168.1.1:6865/313475768,v1:192.168.1.1:6868/313475768] exists,up 309712bc-7001-4530-8b71-49232bd10f21
+osd.15 up   in  weight 1 up_from 10641 up_thru 10740 down_at 10632 last_clean_interval [8466,10631) [v2:192.168.1.1:6860/1137649384,v1:192.168.1.1:6863/1137649384] [v2:192.168.1.1:6866/1137649384,v1:192.168.1.1:6869/1137649384] exists,up 681f70b2-5386-4cba-9439-a87a7a899bf6
+osd.16 up   in  weight 1 up_from 10643 up_thru 10706 down_at 10632 last_clean_interval [8461,10631) [v2:192.168.1.1:6802/1118316087,v1:192.168.1.1:6803/1118316087] [v2:192.168.1.1:6804/1118316087,v1:192.168.1.1:6805/1118316087] exists,up 7fb6ad08-ca7e-4f7e-9d4e-2ab33be90079
+osd.17 up   in  weight 1 up_from 10641 up_thru 10742 down_at 10632 last_clean_interval [8464,10631) [v2:192.168.1.1:6850/3634550148,v1:192.168.1.1:6851/3634550148] [v2:192.168.1.1:6852/3634550148,v1:192.168.1.1:6853/3634550148] exists,up 420b497e-56ad-40c8-b0eb-b8af058ed70b
+osd.18 up   in  weight 1 up_from 10639 up_thru 10713 down_at 10632 last_clean_interval [8464,10631) [v2:192.168.1.1:6922/1168871061,v1:192.168.1.1:6923/1168871061] [v2:192.168.1.1:6924/1168871061,v1:192.168.1.1:6925/1168871061] exists,up d7fc2bcb-82e4-40d0-b3f6-516209b13b38
+osd.19 up   in  weight 1 up_from 10641 up_thru 10722 down_at 10632 last_clean_interval [8462,10631) [v2:192.168.1.1:6818/1933113173,v1:192.168.1.1:6819/1933113173] [v2:192.168.1.1:6820/1933113173,v1:192.168.1.1:6821/1933113173] exists,up dcaccca0-a7d1-426a-adcd-9a85ee4581b2
+osd.20 up   in  weight 1 up_from 10643 up_thru 10726 down_at 10632 last_clean_interval [8466,10631) [v2:192.168.1.1:6882/1174743219,v1:192.168.1.1:6883/1174743219] [v2:192.168.1.1:6884/1174743219,v1:192.168.1.1:6885/1174743219] exists,up 7216107d-a429-4059-ad3e-d0c94d9624ed
+osd.21 up   in  weight 1 up_from 10642 up_thru 10710 down_at 10632 last_clean_interval [8463,10631) [v2:192.168.1.1:6890/401212228,v1:192.168.1.1:6892/401212228] [v2:192.168.1.1:6894/401212228,v1:192.168.1.1:6896/401212228] exists,up 0f06c26c-a2e6-4952-a894-fcaab21ca464
+osd.22 up   in  weight 1 up_from 10642 up_thru 10738 down_at 10632 last_clean_interval [8465,10631) [v2:192.168.1.1:6838/3913196159,v1:192.168.1.1:6840/3913196159] [v2:192.168.1.1:6842/3913196159,v1:192.168.1.1:6844/3913196159] exists,up 0862b5c0-fd61-4556-9837-54d780ccb2d3
+osd.23 up   in  weight 1 up_from 10647 up_thru 10750 down_at 10632 last_clean_interval [8463,10631) [v2:192.168.1.1:6891/2682871512,v1:192.168.1.1:6893/2682871512] [v2:192.168.1.1:6895/2682871512,v1:192.168.1.1:6897/2682871512] exists,up 3b37c80b-43c9-4362-8b89-17a8b779124b
+osd.24 up   in  weight 1 up_from 10637 up_thru 10744 down_at 10632 last_clean_interval [8465,10631) [v2:192.168.1.1:6834/2439881437,v1:192.168.1.1:6835/2439881437] [v2:192.168.1.1:6836/2439881437,v1:192.168.1.1:6837/2439881437] exists,up 34a38864-65b0-4b9f-b808-9339954eff66
+osd.25 up   in  weight 1 up_from 10488 up_thru 10650 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6890/2249335770,v1:192.168.2.1:6891/2249335770] [v2:192.168.2.1:6892/2249335770,v1:192.168.2.1:6893/2249335770] exists,up f1935962-c18c-4cb7-89fb-21291e3c871b
+osd.26 up   in  weight 1 up_from 10691 up_thru 10745 down_at 10482 last_clean_interval [8779,10480) [v2:192.168.2.1:6922/3116151899,v1:192.168.2.1:6923/3116151899] [v2:192.168.2.1:6924/3116151899,v1:192.168.2.1:6925/3116151899] exists,up 141a9265-afd3-47b5-baca-4a54f8f89f27
+osd.27 up   in  weight 1 up_from 10491 up_thru 10649 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6835/2774996255,v1:192.168.2.1:6838/2774996255] [v2:192.168.2.1:6839/2774996255,v1:192.168.2.1:6842/2774996255] exists,up 18dc5f6d-2ffd-4a6c-b03d-b2a56ad263cd
+osd.28 up   in  weight 1 up_from 10487 up_thru 10650 down_at 10482 last_clean_interval [8447,10480) [v2:192.168.2.1:6802/1080061497,v1:192.168.2.1:6803/1080061497] [v2:192.168.2.1:6804/1080061497,v1:192.168.2.1:6805/1080061497] exists,up ea9f17b8-8fe8-4416-800a-0816f5719ee6
+osd.29 up   in  weight 1 up_from 10486 up_thru 10650 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6858/247847762,v1:192.168.2.1:6859/247847762] [v2:192.168.2.1:6860/247847762,v1:192.168.2.1:6861/247847762] exists,up b44296bd-0530-49d9-b42c-a0acfe5e0acf
+osd.30 up   in  weight 1 up_from 10487 up_thru 10649 down_at 10482 last_clean_interval [8452,10480) [v2:192.168.2.1:6906/4103140534,v1:192.168.2.1:6907/4103140534] [v2:192.168.2.1:6908/4103140534,v1:192.168.2.1:6909/4103140534] exists,up 29f41076-cd40-4f77-a71a-fd31ed0022cc
+osd.31 up   in  weight 1 up_from 10486 up_thru 10650 down_at 10482 last_clean_interval [8449,10480) [v2:192.168.2.1:6898/1796649682,v1:192.168.2.1:6899/1796649682] [v2:192.168.2.1:6900/1796649682,v1:192.168.2.1:6901/1796649682] exists,up a68fc210-b14a-484a-ac5e-400e89313fb1
+osd.32 up   in  weight 1 up_from 10485 up_thru 10649 down_at 10482 last_clean_interval [8448,10480) [v2:192.168.2.1:6836/3446914418,v1:192.168.2.1:6840/3446914418] [v2:192.168.2.1:6843/3446914418,v1:192.168.2.1:6846/3446914418] exists,up cd602aa3-0ce2-4250-9e11-b726d6a1403a
+osd.33 up   in  weight 1 up_from 10486 up_thru 10650 down_at 10482 last_clean_interval [8450,10480) [v2:192.168.2.1:6810/1665684608,v1:192.168.2.1:6811/1665684608] [v2:192.168.2.1:6812/1665684608,v1:192.168.2.1:6813/1665684608] exists,up 67cfba83-e9bf-4a23-a2cb-50f57b22814e
+osd.34 up   in  weight 1 up_from 10489 up_thru 10650 down_at 10482 last_clean_interval [8451,10480) [v2:192.168.2.1:6882/1673817475,v1:192.168.2.1:6883/1673817475] [v2:192.168.2.1:6884/1673817475,v1:192.168.2.1:6885/1673817475] exists,up 46adb2f6-c4e9-47cd-9d3a-b2b388b036ee
+osd.35 up   in  weight 1 up_from 10492 up_thru 10650 down_at 10482 last_clean_interval [8449,10480) [v2:192.168.2.1:6834/2435490506,v1:192.168.2.1:6837/2435490506] [v2:192.168.2.1:6841/2435490506,v1:192.168.2.1:6844/2435490506] exists,up 3d57997c-645e-443d-844e-c69bd922d858
+osd.36 up   in  weight 1 up_from 10471 up_thru 10747 down_at 10468 last_clean_interval [10184,10466) [v2:192.168.3.1:6906/1502550413,v1:192.168.3.1:6907/1502550413] [v2:192.168.3.1:6908/1502550413,v1:192.168.3.1:6909/1502550413] exists,up fb1d39cf-4288-486a-84a8-7e9dce3d3424
+osd.37 up   in  weight 1 up_from 10474 up_thru 10710 down_at 10468 last_clean_interval [10181,10466) [v2:192.168.3.1:6835/2322177289,v1:192.168.3.1:6837/2322177289] [v2:192.168.3.1:6840/2322177289,v1:192.168.3.1:6843/2322177289] exists,up b63a58bc-6294-4c16-abd8-cb5a757d91de
+osd.38 up   in  weight 1 up_from 10471 up_thru 10739 down_at 10468 last_clean_interval [10184,10466) [v2:192.168.3.1:6834/2927149677,v1:192.168.3.1:6836/2927149677] [v2:192.168.3.1:6838/2927149677,v1:192.168.3.1:6841/2927149677] exists,up eaaa89ae-dc34-45b0-8056-2101ee8a779b
+osd.39 up   in  weight 1 up_from 10474 up_thru 10706 down_at 10468 last_clean_interval [10180,10466) [v2:192.168.3.1:6914/1362400229,v1:192.168.3.1:6915/1362400229] [v2:192.168.3.1:6916/1362400229,v1:192.168.3.1:6917/1362400229] exists,up 22784bbb-ba50-4c24-a936-42c5af211033
+osd.40 up   in  weight 1 up_from 10472 up_thru 10720 down_at 10468 last_clean_interval [10183,10466) [v2:192.168.3.1:6922/529298947,v1:192.168.3.1:6923/529298947] [v2:192.168.3.1:6924/529298947,v1:192.168.3.1:6925/529298947] exists,up 601fd47f-db69-42fc-8094-6e1a6f4e0aba
+osd.41 up   in  weight 1 up_from 10471 up_thru 10726 down_at 10468 last_clean_interval [10178,10466) [v2:192.168.3.1:6802/3852802290,v1:192.168.3.1:6803/3852802290] [v2:192.168.3.1:6804/3852802290,v1:192.168.3.1:6805/3852802290] exists,up 699f2574-8427-42ef-9158-5ef082794667
+osd.42 up   in  weight 1 up_from 10470 up_thru 10722 down_at 10468 last_clean_interval [10177,10466) [v2:192.168.3.1:6874/3601395042,v1:192.168.3.1:6875/3601395042] [v2:192.168.3.1:6876/3601395042,v1:192.168.3.1:6877/3601395042] exists,up d828182a-07cc-47ec-8dbd-f9cf0c4aadc9
+osd.43 up   in  weight 1 up_from 10473 up_thru 10734 down_at 10468 last_clean_interval [10182,10466) [v2:192.168.3.1:6826/554385356,v1:192.168.3.1:6827/554385356] [v2:192.168.3.1:6828/554385356,v1:192.168.3.1:6829/554385356] exists,up 8d6a51e1-780e-4d80-8d7d-2e68941a3858
+osd.44 up   in  weight 1 up_from 10475 up_thru 10755 down_at 10468 last_clean_interval [10185,10466) [v2:192.168.3.1:6839/3837068186,v1:192.168.3.1:6842/3837068186] [v2:192.168.3.1:6845/3837068186,v1:192.168.3.1:6848/3837068186] exists,up e21bfa98-da9e-492a-b480-9c22ec92b1d8
+osd.45 up   in  weight 1 up_from 10471 up_thru 10757 down_at 10468 last_clean_interval [10184,10466) [v2:192.168.3.1:6810/2952266191,v1:192.168.3.1:6811/2952266191] [v2:192.168.3.1:6812/2952266191,v1:192.168.3.1:6813/2952266191] exists,up f3d5e75e-b52a-45e6-8ec1-c64e9d5690af
+osd.46 up   in  weight 1 up_from 10471 up_thru 10713 down_at 10468 last_clean_interval [10179,10466) [v2:192.168.3.1:6858/2064472908,v1:192.168.3.1:6859/2064472908] [v2:192.168.3.1:6860/2064472908,v1:192.168.3.1:6861/2064472908] exists,up 9974b95c-94e9-4c86-9052-6ae8f6bbc5ab
+osd.47 up   in  weight 1 up_from 10473 up_thru 10738 down_at 10468 last_clean_interval [10185,10466) [v2:192.168.3.1:6898/2205914466,v1:192.168.3.1:6899/2205914466] [v2:192.168.3.1:6900/2205914466,v1:192.168.3.1:6901/2205914466] exists,up 2ef47f64-afa6-4d29-8261-330368136ccf
+osd.48 up   in  weight 1 up_from 10470 up_thru 10728 down_at 10468 last_clean_interval [10184,10466) [v2:192.168.3.1:6866/2631589833,v1:192.168.3.1:6867/2631589833] [v2:192.168.3.1:6868/2631589833,v1:192.168.3.1:6869/2631589833] exists,up b07bdf11-0b59-4c33-a269-d2d1d04f38fb
+pg_upmap_items 5.18 [11,10]
+pg_upmap_items 5.19 [22,24]
+pg_upmap_items 5.1d [31,6]
+pg_upmap_items 5.28 [36,10]
+pg_upmap_items 5.31 [33,6]
+pg_upmap_items 5.46 [28,34]
+pg_upmap_items 5.4d [29,34]
+pg_upmap_items 5.4e [22,3]
+pg_upmap_items 5.6c [31,34]
+pg_upmap_items 5.89 [17,24]
+pg_upmap_items 5.8f [17,3]
+pg_upmap_items 5.98 [17,24]
+pg_upmap_items 5.9e [36,9]
+pg_upmap_items 5.b1 [31,27,41,42]
+pg_upmap_items 5.b2 [12,24]
+pg_upmap_items 5.b5 [46,39]
+pg_upmap_items 5.bc [31,34]
+pg_upmap_items 5.e0 [17,24]
+pg_upmap_items 5.e3 [36,9]
+pg_upmap_items 5.f6 [17,15]
+pg_upmap_items 5.10c [36,48]
+pg_upmap_items 5.119 [31,34]
+pg_upmap_items 5.148 [11,9]
+pg_upmap_items 5.170 [29,34]
+pg_upmap_items 5.17c [31,27]
+pg_upmap_items 5.17e [28,34]
+pg_upmap_items 5.186 [29,34]
+pg_upmap_items 5.1a8 [21,3]
+pg_upmap_items 5.1b9 [17,15]
+pg_upmap_items 5.1c6 [31,27]
+pg_upmap_items 5.1c7 [28,34]
+pg_upmap_items 5.1ca [33,6]
+pg_upmap_items 5.1d4 [20,16]
+pg_upmap_items 5.1ff [20,24]
+pg_upmap_items 5.206 [33,6]
+pg_upmap_items 5.220 [11,48]
+pg_upmap_items 5.22d [29,27]
+pg_upmap_items 5.249 [31,34]
+pg_upmap_items 5.24d [41,9]
+pg_upmap_items 5.25a [36,10]
+pg_upmap_items 5.271 [33,34]
+pg_upmap_items 5.281 [36,10]
+pg_upmap_items 5.2ac [29,34]
+pg_upmap_items 5.2de [21,15]
+pg_upmap_items 5.2e4 [33,34]
+pg_upmap_items 5.306 [22,13]
+pg_upmap_items 5.311 [20,16]
+pg_upmap_items 5.317 [36,48]
+pg_upmap_items 5.32a [33,34]
+pg_upmap_items 5.33c [31,6]
+pg_upmap_items 5.353 [41,9]
+pg_upmap_items 5.35e [33,27]
+pg_upmap_items 5.368 [22,15]
+pg_upmap_items 5.36a [21,3]
+pg_upmap_items 5.382 [29,6]
+pg_upmap_items 5.39e [33,27]
+pg_upmap_items 5.3a5 [33,27]
+pg_upmap_items 5.3be [21,24]
+pg_upmap_items 5.3c5 [36,10]
+pg_upmap_items 5.3c8 [14,24]
+pg_upmap_items 5.3d1 [33,6]
+pg_upmap_items 5.3ff [31,27]
+pg_upmap_items 5.427 [14,24]
+pg_upmap_items 5.42d [17,24]
+pg_upmap_items 5.432 [17,24]
+pg_upmap_items 5.445 [36,10]
+pg_upmap_items 5.451 [36,10]
+pg_upmap_items 5.471 [28,6]
+pg_upmap_items 5.4ad [33,34,12,15]
+pg_upmap_items 5.4b3 [28,27]
+pg_upmap_items 5.4bf [31,27]
+pg_upmap_items 5.4c8 [33,34]
+pg_upmap_items 5.4d1 [36,9]
+pg_upmap_items 5.4e6 [29,34]
+pg_upmap_items 5.4e7 [46,10]
+pg_upmap_items 5.522 [41,9]
+pg_upmap_items 5.530 [11,48]
+pg_upmap_items 5.53b [17,24]
+pg_upmap_items 5.567 [33,6]
+pg_upmap_items 5.571 [29,6]
+pg_upmap_items 5.58b [29,34]
+pg_upmap_items 5.5a3 [36,9]
+pg_upmap_items 5.5a5 [43,39]
+pg_upmap_items 5.5a9 [17,3]
+pg_upmap_items 5.5ab [17,18]
+pg_upmap_items 5.5bb [36,10]
+pg_upmap_items 5.604 [41,48]
+pg_upmap_items 5.626 [22,3]
+pg_upmap_items 5.686 [33,25]
+pg_upmap_items 5.68d [12,24]
+pg_upmap_items 5.68e [17,15]
+pg_upmap_items 5.69d [11,39]
+pg_upmap_items 5.6bb [31,27]
+pg_upmap_items 5.6bd [21,15]
+pg_upmap_items 5.6de [21,15]
+pg_upmap_items 5.6e8 [31,27]
+pg_upmap_items 5.6ed [31,27]
+pg_upmap_items 5.6ef [41,48]
+pg_upmap_items 5.70f [22,24]
+pg_upmap_items 5.712 [31,25]
+pg_upmap_items 5.71c [12,24]
+pg_upmap_items 5.737 [14,15]
+pg_upmap_items 5.741 [22,3]
+pg_upmap_items 5.759 [29,27]
+pg_upmap_items 5.75c [29,6]
+pg_upmap_items 5.76d [36,47]
+pg_upmap_items 5.775 [41,10]
+pg_upmap_items 5.777 [22,24]
+pg_upmap_items 5.78b [41,9]
+pg_upmap_items 5.795 [41,42]
+pg_upmap_items 5.798 [12,3]
+pg_upmap_items 5.7a0 [12,3]
+pg_upmap_items 5.7a7 [29,27]
+pg_upmap_items 5.7a8 [17,18]
+pg_upmap_items 5.7c0 [21,15]
+pg_upmap_items 5.7c5 [36,10]
+pg_upmap_items 5.7d1 [12,24]
+pg_upmap_items 5.7ed [33,27]
+pg_upmap_items 5.7f8 [33,34]
