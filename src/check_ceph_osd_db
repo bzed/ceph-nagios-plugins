@@ -35,103 +35,50 @@ STATUS_CRITICAL = 2
 STATUS_UNKNOWN = 3
 
 
-def parse_ceph_conf(conf_file):
+def get_host_ips(hostname, conf_file=None):
     """
-    Parse ceph config file and extract hostname to IP mappings.
-    Returns a dict mapping hostnames to sets of IPs.
-    """
-    host_to_ips = {}
-    current_section = None
-    
-    try:
-        with open(conf_file, 'r') as f:
-            for line in f:
-                stripped = line.strip()
-                if not stripped or stripped.startswith('#'):
-                    continue
-                # Section header - match [section.name] with any characters except ]
-                section_match = re.match(r'^\[([^\]]+)\]', stripped)
-                if section_match:
-                    current_section = section_match.group(1).strip()
-                    # Extract hostname from section name (e.g., "mon.node-001" -> "node-001")
-                    parts = current_section.split('.', 1)
-                    if len(parts) == 2:
-                        hostname = parts[1]
-                        if hostname not in host_to_ips:
-                            host_to_ips[hostname] = set()
-                    continue
-                # Key = value pairs
-                if current_section and '=' in stripped:
-                    key, _, value = stripped.partition('=')
-                    key = key.strip()
-                    value = value.strip()
-                    
-                    # Check for IP address values
-                    ip_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
-                    if key in ('public_addr', 'host', 'addr'):
-                        # Extract hostname from section
-                        parts = current_section.split('.', 1)
-                        if len(parts) == 2:
-                            hostname = parts[1]
-                            # Extract IPs from value
-                            ips = re.findall(ip_pattern, value)
-                            if hostname not in host_to_ips:
-                                host_to_ips[hostname] = set()
-                            host_to_ips[hostname].update(ips)
-    except Exception as e:
-        pass  # Silently ignore config parsing errors
-    
-    return host_to_ips
-
-
-def resolve_hostname_to_ips(hostname):
-    """
-    Resolve a hostname to all its IP addresses via DNS.
+    Get all IP addresses for a hostname from DNS and ceph config.
     Returns a set of IP addresses.
     """
     ips = set()
+    
+    # Get IPs from DNS resolution
     try:
         addrinfo = socket.getaddrinfo(hostname, None, 0, socket.SOCK_STREAM)
         for info in addrinfo:
-            ip = info[-1][0]
-            ips.add(ip)
+            ips.add(info[-1][0])
     except Exception:
         pass
-    return ips
-
-
-def extract_ips_from_osd_line(line):
-    """
-    Extract all IP addresses from an OSD dump line.
-    Returns a set of IP addresses.
-    """
-    ips = set()
-    ip_pattern = r'\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'
-    matches = re.findall(ip_pattern, line)
-    for match in matches:
-        # Validate it looks like an IP
-        parts = match.split('.')
-        if all(0 <= int(p) <= 255 for p in parts):
-            ips.add(match)
-    return ips
-
-
-def get_host_ips(hostname, conf_file=None):
-    """
-    Get all IP addresses associated with a hostname.
-    Combines DNS resolution and ceph config parsing.
-    Returns a set of IP addresses.
-    """
-    ips = set()
     
-    # Get IPs from DNS
-    ips.update(resolve_hostname_to_ips(hostname))
-    
-    # Get IPs from ceph config if available
+    # Get IP from ceph config [mon.<hostname>] public_addr
     if conf_file and os.path.exists(conf_file):
-        host_to_ips = parse_ceph_conf(conf_file)
-        if hostname in host_to_ips:
-            ips.update(host_to_ips[hostname])
+        try:
+            with open(conf_file, 'r') as f:
+                in_mon_section = False
+                for line in f:
+                    stripped = line.strip()
+                    if not stripped or stripped.startswith('#'):
+                        continue
+                    # Check for [mon.<hostname>] section
+                    if stripped == '[mon.' + hostname + ']':
+                        in_mon_section = True
+                        continue
+                    # Check for end of section or new section
+                    if in_mon_section and stripped.startswith('['):
+                        break
+                    # Get public_addr from mon section
+                    if in_mon_section and stripped.startswith('public_addr'):
+                        key, _, value = stripped.partition('=')
+                        value = value.strip()
+                        ip_pattern = r'\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'
+                        matches = re.findall(ip_pattern, value)
+                        for m in matches:
+                            parts = m.split('.')
+                            if all(0 <= int(p) <= 255 for p in parts):
+                                ips.add(m)
+                        break
+        except Exception:
+            pass
     
     return ips
 
