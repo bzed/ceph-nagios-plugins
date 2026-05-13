@@ -52,6 +52,7 @@ def main():
                         "Can be inverted, e.g. '^((?!(PG_DEGRADED|OBJECT_MISPLACED)$).)*$'")
     parser.add_argument('-w','--whitelist', help='whitelist regexp for ceph health warnings')
     parser.add_argument('-d','--detail', help="exec 'ceph health detail'", action='store_true')
+    parser.add_argument('-S','--status', help="include 'ceph status' output", action='store_true')
     parser.add_argument('-V','--version', help='show version and exit', action='store_true')
     parser.add_argument('-a','--cephadm', help='uses cephadm to execute the command', action='store_true')
     parser.add_argument('-s','--skip-muted', help='skip muted checks', action='store_true')
@@ -180,6 +181,38 @@ def main():
         else:
             print("HEALTH OK")
         if extended: print('\n'.join(extended))
+        
+        # Include ceph status output if requested
+        if args.status:
+            ceph_status_cmd = [ceph_exec]
+            if args.cephadm:
+                ceph_status_cmd = [cephadm_exec, 'shell'] + ceph_status_cmd
+            if args.monaddress:
+                ceph_status_cmd.append('-m')
+                ceph_status_cmd.append(args.monaddress)
+            if args.cluster:
+                ceph_status_cmd.append('--cluster')
+                ceph_status_cmd.append(args.cluster)
+            if args.conf:
+                ceph_status_cmd.append('-c')
+                ceph_status_cmd.append(args.conf)
+            if args.id:
+                ceph_status_cmd.append('--id')
+                ceph_status_cmd.append(args.id)
+            if args.name:
+                ceph_status_cmd.append('--name')
+                ceph_status_cmd.append(args.name)
+            if args.keyring:
+                ceph_status_cmd.append('--keyring')
+                ceph_status_cmd.append(args.keyring)
+            ceph_status_cmd.append('status')
+            
+            p_status = subprocess.Popen(ceph_status_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            status_output, status_err = p_status.communicate()
+            if status_output:
+                print("\nCeph Status:")
+                print(status_output.decode('utf-8'))
+        
         return ret
 
 

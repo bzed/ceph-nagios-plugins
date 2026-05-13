@@ -35,6 +35,145 @@ STATUS_CRITICAL = 2
 STATUS_UNKNOWN = 3
 
 
+def parse_ceph_conf(conf_file):
+    """
+    Parse ceph config file and extract hostname to IP mappings.
+    Returns a dict mapping hostnames to sets of IPs.
+    """
+    host_to_ips = {}
+    current_section = None
+    
+    try:
+        with open(conf_file, 'r') as f:
+            for line in f:
+                stripped = line.strip()
+                if not stripped or stripped.startswith('#'):
+                    continue
+                # Section header - match [section.name] with any characters except ]
+                section_match = re.match(r'^\[([^\]]+)\]', stripped)
+                if section_match:
+                    current_section = section_match.group(1).strip()
+                    # Extract hostname from section name (e.g., "mon.node-001" -> "node-001")
+                    parts = current_section.split('.', 1)
+                    if len(parts) == 2:
+                        hostname = parts[1]
+                        if hostname not in host_to_ips:
+                            host_to_ips[hostname] = set()
+                    continue
+                # Key = value pairs
+                if current_section and '=' in stripped:
+                    key, _, value = stripped.partition('=')
+                    key = key.strip()
+                    value = value.strip()
+                    
+                    # Check for IP address values
+                    ip_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+                    if key in ('public_addr', 'host', 'addr'):
+                        # Extract hostname from section
+                        parts = current_section.split('.', 1)
+                        if len(parts) == 2:
+                            hostname = parts[1]
+                            # Extract IPs from value
+                            ips = re.findall(ip_pattern, value)
+                            if hostname not in host_to_ips:
+                                host_to_ips[hostname] = set()
+                            host_to_ips[hostname].update(ips)
+    except Exception as e:
+        pass  # Silently ignore config parsing errors
+    
+    return host_to_ips
+
+
+def resolve_hostname_to_ips(hostname):
+    """
+    Resolve a hostname to all its IP addresses via DNS.
+    Returns a set of IP addresses.
+    """
+    ips = set()
+    try:
+        addrinfo = socket.getaddrinfo(hostname, None, 0, socket.SOCK_STREAM)
+        for info in addrinfo:
+            ip = info[-1][0]
+            ips.add(ip)
+    except Exception:
+        pass
+    return ips
+
+
+def extract_ips_from_osd_line(line):
+    """
+    Extract all IP addresses from an OSD dump line.
+    Returns a set of IP addresses.
+    """
+    ips = set()
+    ip_pattern = r'\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'
+    matches = re.findall(ip_pattern, line)
+    for match in matches:
+        # Validate it looks like an IP
+        parts = match.split('.')
+        if all(0 <= int(p) <= 255 for p in parts):
+            ips.add(match)
+    return ips
+
+
+def get_host_ips(hostname, conf_file=None):
+    """
+    Get all IP addresses associated with a hostname.
+    Combines DNS resolution and ceph config parsing.
+    Returns a set of IP addresses.
+    """
+    ips = set()
+    
+    # Get IPs from DNS
+    ips.update(resolve_hostname_to_ips(hostname))
+    
+    # Get IPs from ceph config if available
+    if conf_file and os.path.exists(conf_file):
+        host_to_ips = parse_ceph_conf(conf_file)
+        if hostname in host_to_ips:
+            ips.update(host_to_ips[hostname])
+    
+    return ips
+
+
+def find_osds_for_host(osd_dump, hostname, conf_file=None):
+    """
+    Find all OSDs in the dump that belong to the given hostname.
+    Returns list of OSD names (e.g., ['osd.0', 'osd.1']).
+    """
+    host_ips = get_host_ips(hostname, conf_file)
+    
+    if not host_ips:
+        # If we couldn't resolve the hostname, fall back to old behavior
+        # Try to use the hostname directly as an IP
+        host_ips = {hostname}
+    
+    osds = []
+    
+    for line in osd_dump.split('\n'):
+        osd_ips = extract_ips_from_osd_line(line)
+        
+        # Check if any of the OSD's IPs match any of the host's IPs
+        matching_ip = any(osd_ip in host_ips for osd_ip in osd_ips)
+        
+        # Also check if the line contains the hostname as a string
+        hostname_in_line = hostname in line
+        
+        if not matching_ip and not hostname_in_line:
+            continue
+        
+        # Extract OSD ID
+        osd_match = re.match(r'^(osd\.\d+)', line)
+        if not osd_match:
+            continue
+        
+        # Check if OSD is up
+        if 'up' in line and 'in' in line:
+            osds.append(osd_match.group(1))
+    
+    return osds
+
+
 def main():
     parser = argparse.ArgumentParser(description="'ceph osd' nagios plugin.")
 
@@ -78,15 +217,6 @@ def main():
         print("UNKNOWN: no OSD hostname given")
         return STATUS_UNKNOWN
 
-    try:
-      addrinfo = socket.getaddrinfo(args.host, None, 0, socket.SOCK_STREAM)
-      args.host = addrinfo[0][-1][0]
-      if addrinfo[0][0] == socket.AF_INET6:
-          args.host = "[%s]" % args.host
-    except Exception:
-        print('UNKNOWN: could not resolve %s' % args.host)
-        return STATUS_UNKNOWN
-
     base_ceph_cmd = [ceph_exec]
 
     if args.cephadm:
@@ -123,10 +253,8 @@ def main():
         print("CRITICAL: %s" % '\n'.join(err.decode('utf-8').split('\n')[(4 if args.cephadm else 0):]))
         return STATUS_CRITICAL
 
-    # Automatically escapes all special regex characters (., [, ], etc.)
-    osd_host = re.escape(args.host)
-
-    osds_up = re.findall(r"^(osd\.[^ ]*) up.*%s:" % (osd_host), output.decode('utf-8'), re.MULTILINE)
+    # Use the new matching function to find OSDs for the host
+    osds_up = find_osds_for_host(output.decode('utf-8'), args.host, args.conf)
 
     final_status = STATUS_OK
     lines = []
